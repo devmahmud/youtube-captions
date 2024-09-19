@@ -1,0 +1,45 @@
+{
+  "name": "youtube-captions",
+  "version": "1.0.0",
+  "description": "Youtube video captions generator",
+  "main": "dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "prepack": "pnpm run build",
+    "typecheck": "tsc -p tsconfig.json",
+    "release": "semantic-release",
+    "release-test": "semantic-release --dry-run",
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devmahmud/youtube-captions.git"
+  },
+  "keywords": [],
+  "author": "Mahmudul Alam <expelmahmud@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devmahmud/youtube-captions/issues"
+  },
+  "homepage": "https://github.com/devmahmud/youtube-captions#readme",
+  "files": [
+    "dist/**/*.js*",
+    "dist/**/*.mjs*",
+    "dist/**/*.d*"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.5.5",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.1"
+  }
+}
