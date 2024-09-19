@@ -18,13 +18,26 @@
     "typecheck": "tsc -p tsconfig.json",
     "release": "semantic-release",
     "release-test": "semantic-release --dry-run",
-    "test": "vitest run"
+    "test": "vitest run --run"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/devmahmud/youtube-captions.git"
   },
-  "keywords": [],
+  "keywords": [
+    "youtube",
+    "captions",
+    "subtitles",
+    "video",
+    "fetch",
+    "api",
+    "transcripts",
+    "youtube-api",
+    "javascript",
+    "node",
+    "text",
+    "plain-text"
+  ],
   "author": "Mahmudul Alam <expelmahmud@gmail.com>",
   "license": "MIT",
   "bugs": {
