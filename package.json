@@ -18,7 +18,7 @@
     "typecheck": "tsc -p tsconfig.json",
     "release": "semantic-release",
     "release-test": "semantic-release --dry-run",
-    "test": "vitest run --run"
+    "test": "vitest run"
   },
   "repository": {
     "type": "git",
