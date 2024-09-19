@@ -4,11 +4,10 @@
   "description": "Youtube video captions generator",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    }
+    "import": "./dist/index.js",
+    "require": "./dist/index.cjs"
   },
   "scripts": {
     "build": "tsup",
@@ -22,6 +21,9 @@
     "type": "git",
     "url": "git+https://github.com/devmahmud/youtube-captions.git"
   },
+  "files": [
+    "dist/**/*"
+  ],
   "keywords": [
     "youtube",
     "captions",
