@@ -1,5 +1,8 @@
 # YouTube Captions
 
+[![Continuous Integration](https://github.com/devmahmud/youtube-captions/actions/workflows/CI.yml/badge.svg)](https://github.com/devmahmud/youtube-captions/actions/workflows/CI.yml)
+[![Release](https://github.com/devmahmud/youtube-captions/actions/workflows/release.yml/badge.svg)](https://github.com/devmahmud/youtube-captions/actions/workflows/release.yml)
+
 A simple utility to fetch YouTube video captions programmatically. This library retrieves captions in plain text or structured format for specified video IDs.
 
 ## Features
