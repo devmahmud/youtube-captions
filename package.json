@@ -3,13 +3,11 @@
   "version": "1.0.0",
   "description": "Youtube video captions generator",
   "main": "dist/index.js",
-  "module": "./dist/index.mjs",
   "types": "dist/index.d.ts",
-  "type": "module",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     }
   },
   "scripts": {
@@ -44,11 +42,6 @@
     "url": "https://github.com/devmahmud/youtube-captions/issues"
   },
   "homepage": "https://github.com/devmahmud/youtube-captions#readme",
-  "files": [
-    "dist/**/*.js*",
-    "dist/**/*.mjs*",
-    "dist/**/*.d*"
-  ],
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.0",
