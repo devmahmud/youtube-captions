@@ -49,7 +49,7 @@ interface CaptionResponse {
  * @param {CaptionConfig} [options] - Language configuration options.
  * @returns {Promise<CaptionResponse[]>} Promise resolving to caption data.
  */
-export default async function getVideoCaptions(
+async function getVideoCaptions(
   videoId: string,
   options?: CaptionConfig
 ): Promise<CaptionResponse[]> {
@@ -151,3 +151,5 @@ function extractVideoIdentifier(videoId: string): string {
   if (match) return match[1];
   throw new YouTubeCaptionError('Unable to retrieve YouTube video ID.');
 }
+
+module.exports = getVideoCaptions;
