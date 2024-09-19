@@ -31,12 +31,12 @@ const errorTypes = {
     ),
 };
 
-interface CaptionConfig {
+export interface CaptionConfig {
   lang?: string;
   plainText?: true;
 }
 
-interface CaptionResponse {
+export interface CaptionResponse {
   text: string;
   duration: number;
   offset: number;
@@ -46,13 +46,13 @@ interface CaptionResponse {
 /**
  * Retrieve captions for a specified YouTube video.
  * @param {string} videoId - The video URL or ID.
- * @param {CaptionConfig} [options] - Language configuration options.
- * @returns {Promise<CaptionResponse[]>} Promise resolving to caption data.
+ * @param {CaptionConfig} [options] - Language and formatting configuration options.
+ * @returns {Promise<CaptionResponse[] | string>} Promise resolving to caption data or plain text.
  */
 async function getVideoCaptions(
   videoId: string,
   options?: CaptionConfig
-): Promise<CaptionResponse[]> {
+): Promise<CaptionResponse[] | string> {
   const id = extractVideoIdentifier(videoId);
   const videoPageContent = await fetchVideoContent(id, options?.lang);
 
@@ -62,10 +62,10 @@ async function getVideoCaptions(
   }
 
   checkCaptionsValidity(captionsData, videoId, options?.lang);
-  const captionsLink = getCaptionsURL(captionsData, options?.lang);
+  const captionLink = getCaptionURL(captionsData, options?.lang);
 
-  const captionsContent = await fetchCaptionsContent(captionsLink, options?.lang);
-  return parseCaptionsContent(captionsContent, captionsData, options?.lang);
+  const captionData = await fetchCaptionData(captionLink, options?.lang);
+  return parseCaptionData(captionData, captionsData, options);
 }
 
 async function fetchVideoContent(videoId: string, lang?: string): Promise<string> {
@@ -108,15 +108,15 @@ function checkCaptionsValidity(captions: any, videoId: string, lang?: string) {
   }
 }
 
-function getCaptionsURL(captions: any, lang?: string) {
+function getCaptionURL(captions: any, lang?: string) {
   const track = lang
     ? captions.captionTracks.find((track: { languageCode: string }) => track.languageCode === lang)
     : captions.captionTracks[0];
   return track.baseUrl;
 }
 
-async function fetchCaptionsContent(captionsURL: string, lang?: string): Promise<string> {
-  const response = await fetch(captionsURL, {
+async function fetchCaptionData(captionURL: string, lang?: string): Promise<string> {
+  const response = await fetch(captionURL, {
     headers: {
       ...(lang && { 'Accept-Language': lang }),
       'User-Agent': USER_AGENT_STRING,
@@ -126,18 +126,32 @@ async function fetchCaptionsContent(captionsURL: string, lang?: string): Promise
   return response.text();
 }
 
-function parseCaptionsContent(
-  captionsContent: string,
+/**
+ * Parse the caption data.
+ * @param {string} captionContent - Raw caption data.
+ * @param {any} captions - Caption metadata.
+ * @param {CaptionConfig} options - Configuration options.
+ * @returns {CaptionResponse[] | string} Array of captions or plain text.
+ */
+function parseCaptionData(
+  captionContent: string,
   captions: any,
-  lang?: string
-): CaptionResponse[] {
-  const matches = [...captionsContent.matchAll(CAPTION_XML_REGEX)];
-  return matches.map((match) => ({
+  options?: CaptionConfig
+): CaptionResponse[] | string {
+  const matches = [...captionContent.matchAll(CAPTION_XML_REGEX)];
+
+  const parsedCaptions = matches.map((match) => ({
     text: match[3],
     duration: parseFloat(match[2]),
     offset: parseFloat(match[1]),
-    lang: lang ?? captions.captionTracks[0].languageCode,
+    lang: options?.lang ?? captions.captionTracks[0].languageCode,
   }));
+
+  if (options?.plainText) {
+    return parsedCaptions.map((caption) => caption.text).join(' ');
+  }
+
+  return parsedCaptions;
 }
 
 /**
@@ -152,4 +166,8 @@ function extractVideoIdentifier(videoId: string): string {
   throw new YouTubeCaptionError('Unable to retrieve YouTube video ID.');
 }
 
-module.exports = getVideoCaptions;
+export default getVideoCaptions;
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+  module.exports = getVideoCaptions;
+}
